@@ -45,14 +45,19 @@ class MainActivity : AppCompatActivity() {
             canvasbit.setLine(false)
             canvasbit.setRectangle(true)
             canvasbit.setCircle(false)
+            canvasbit.setArrow(false)
         }
 
         arrow.setOnClickListener() {
+            canvasbit.setArrow(true)
             canvasbit.setLine(false)
+            canvasbit.setRectangle(false)
+            canvasbit.setCircle(false)
         }
 
         pencil.setOnClickListener() {
             canvasbit.setLine(true)
+            canvasbit.setArrow(false)
             canvasbit.setRectangle(false)
             canvasbit.setCircle(false)
         }
@@ -61,6 +66,11 @@ class MainActivity : AppCompatActivity() {
             canvasbit.setLine(false)
             canvasbit.setRectangle(false)
             canvasbit.setCircle(true)
+            canvasbit.setArrow(false)
+        }
+
+        eraser.setOnClickListener() {
+            canvasbit.onClickEraser()
         }
     }
 

@@ -20,10 +20,13 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     private val mpath = ArrayList<Custompath>()
     private val mrectangle = ArrayList<Rectangle>()
     private val mCircle = ArrayList<Circle>()
+    private val mArrow = ArrayList<Arrow>()
     private var rectangle: Boolean = false
     private var currRectangle: Rectangle? = null
     private var circle: Boolean = false
     private var currCircle: Circle? = null
+    private var arrow: Boolean = false
+    private var currArrow: Arrow? = null
     private var line: Boolean = false
     private var startX: Float? = 0f
     private var startY: Float? = 0f
@@ -91,6 +94,17 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
             canvas.drawCircle(it.centerX!!, it.centerY!!, it.radius!!, mDrawPaint!!)
         }
 
+        mArrow.forEach {
+            mDrawPaint!!.strokeWidth = it.paint.brushthickness
+            mDrawPaint!!.color = it.paint.color
+            canvas.drawLine(it.startX!!, it.startY!!, it.endX!!, it.endY!!, mDrawPaint!!)
+        }
+        currArrow?.let {
+            mDrawPaint!!.strokeWidth = it.paint.brushthickness
+            mDrawPaint!!.color = it.paint.color
+            canvas.drawLine(it.startX!!, it.startY!!, it.endX!!, it.endY!!, mDrawPaint!!)
+        }
+
     }
 
     // The Event in which when we give input
@@ -116,6 +130,9 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
                         if (rectangle) {
                             currRectangle = Rectangle(startX, startY, startX, startY, Custompath(color, mBrushSize))
                         }
+                        if(arrow) {
+                            currArrow = Arrow(startX, startY, startX, startY, Custompath(color, mBrushSize))
+                        }
                     }
             }
             MotionEvent.ACTION_MOVE -> {
@@ -137,6 +154,14 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
                             val center = distance/2
                             currCircle = Circle(startX!! + center, startY!! + center, distance/2, Custompath(color, mBrushSize))
                         }
+                        if (arrow) {
+                            currArrow = currArrow?.copy(
+                                startX = startX,
+                                startY = startY,
+                                endX = touchx,
+                                endY = touchy
+                            )
+                        }
                     }
                 }
             }
@@ -152,6 +177,10 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
                 if (rectangle) {
                     currRectangle = null
                     mrectangle.add(Rectangle(startX, startY, endX, endY, Custompath(color, mBrushSize)))
+                }
+                if(arrow) {
+                    currArrow = null
+                    mArrow.add(Arrow(startX, startY, endX, endY, Custompath(color, mBrushSize)))
                 }
                 if (line) {
                     mpath.add(mPathDraw!!)
@@ -192,9 +221,19 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         line = set
     }
 
+    fun setArrow(set: Boolean) {
+        arrow = set
+    }
+
+    fun onClickEraser() {
+        mPathDraw!!.color = Color.WHITE
+    }
+
     data class Rectangle(val startX: Float?, val startY: Float?, val endX: Float?, val endY: Float?, val paint: Custompath)
 
     data class Circle(val centerX: Float?, val centerY: Float?, val radius: Float?, val paint: Custompath)
+
+    data class Arrow(val startX: Float?, val startY: Float?, val endX: Float?, val endY: Float?, val paint: Custompath)
 
     inner class Custompath(var color: Int, var brushthickness: Float) : Path() {
 
