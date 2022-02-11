@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.getDrawable(this, R.drawable.pallet_pressed)
         )
 
-        canvasbit.setBrushSize(10.toFloat())
+        canvasbit.setBrushSize(8.toFloat())
         ib_brush.setOnClickListener()
         {
             show_dialog_brush_size()
@@ -84,19 +84,19 @@ class MainActivity : AppCompatActivity() {
 
         small.setOnClickListener()
         {
-            canvasbit.setBrushSize(10.toFloat())
+            canvasbit.setBrushSize(8.toFloat())
             brushdialog.dismiss()
         }
 
         medium.setOnClickListener()
         {
-            canvasbit.setBrushSize(20.toFloat())
+            canvasbit.setBrushSize(12.toFloat())
             brushdialog.dismiss()
         }
 
         large.setOnClickListener()
         {
-            canvasbit.setBrushSize(30.toFloat())
+            canvasbit.setBrushSize(16.toFloat())
             brushdialog.dismiss()
         }
         brushdialog.show()
