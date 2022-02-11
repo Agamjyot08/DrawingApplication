@@ -58,7 +58,8 @@
             android:id="@+id/eraser"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_toRightOf="@id/ib_brush" />
+            android:layout_toRightOf="@id/ib_brush"
+            android:src="@drawable/ic_baseline_clear_24" />
 
     </RelativeLayout>
 

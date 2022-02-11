@@ -32,9 +32,20 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     private var startY: Float? = 0f
     private var endX: Float? = 0f
     private var endY: Float? = 0f
+//    private val mEraseLast = ArrayList<All>()
+//    private val erase = ArrayList<All>()
 
     init {
         setupdrawing()
+    }
+
+    fun onEraseLast() {
+        mpath.clear()
+        mArrow.clear()
+        mrectangle.clear()
+        mCircle.clear()
+
+        invalidate()
     }
 
     private fun setupdrawing() {
@@ -105,6 +116,15 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
             canvas.drawLine(it.startX!!, it.startY!!, it.endX!!, it.endY!!, mDrawPaint!!)
         }
 
+//        mEraseLast.forEach {
+//           if (it.allRect != null) {
+//               mDrawPaint!!.strokeWidth = it.allRect.paint.brushthickness
+//               mDrawPaint!!.color = it.allRect.paint.color
+//               canvas.drawRect(it.allRect.startX!!, it.allRect.startY!!, it.allRect.endX!!, it.allRect.endY!!, mDrawPaint!!)
+//               }
+//
+//        }
+
     }
 
     // The Event in which when we give input
@@ -173,17 +193,21 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
                     val distance = sqrt((endX!! - startX!!).toDouble().pow(2.0) + (endY!! - startY!!).toDouble().pow(2.0)).toFloat()
                     val center = distance/2
                     mCircle.add(Circle(startX!! + center, startY!! + center, center, Custompath(color, mBrushSize)))
+//                    mEraseLast.add(All(null, null, null, Circle(startX!! + center, startY!! + center, center, Custompath(color, mBrushSize))))
                 }
                 if (rectangle) {
                     currRectangle = null
                     mrectangle.add(Rectangle(startX, startY, endX, endY, Custompath(color, mBrushSize)))
+//                    mEraseLast.add(All(null, null, Rectangle(startX, startY, endX, endY, Custompath(color, mBrushSize)), null))
                 }
                 if(arrow) {
                     currArrow = null
                     mArrow.add(Arrow(startX, startY, endX, endY, Custompath(color, mBrushSize)))
+//                    mEraseLast.add(All(null, Arrow(startX, startY, endX, endY, Custompath(color, mBrushSize)), null, null))
                 }
                 if (line) {
                     mpath.add(mPathDraw!!)
+//                    mEraseLast.add(All(mPathDraw!!, null, null, null))
                 }
                 mPathDraw = Custompath(color, mBrushSize)
 
@@ -225,10 +249,6 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         arrow = set
     }
 
-    fun onClickEraser() {
-        mPathDraw!!.color = Color.WHITE
-    }
-
     data class Rectangle(val startX: Float?, val startY: Float?, val endX: Float?, val endY: Float?, val paint: Custompath)
 
     data class Circle(val centerX: Float?, val centerY: Float?, val radius: Float?, val paint: Custompath)
@@ -238,4 +258,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     inner class Custompath(var color: Int, var brushthickness: Float) : Path() {
 
     }
+
+//    data class All(val allLine: Custompath?, val allArrow: Arrow?, val allRect: Rectangle?, val allCircle: Circle?)
+
 }

@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         eraser.setOnClickListener() {
-            canvasbit.onClickEraser()
+            canvasbit.onEraseLast()
         }
     }
 
